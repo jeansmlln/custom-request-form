@@ -1,0 +1,229 @@
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sky:#56aee8;--sky-dark:#0C447C;--sky-mid:#185FA5;--sky-light:#E6F1FB;--sky-border:#B5D4F4;
+  --surface:#ffffff;--bg:#f0f7fd;
+  --text:var(--color-text-primary);--muted:var(--color-text-secondary);
+  --border:#ddeaf7;--radius:12px;--radius-sm:8px;
+}
+body{font-family:var(--font-sans);background:var(--bg);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem 4rem}
+.card{background:var(--surface);border-radius:20px;border:1px solid var(--border);padding:2.5rem 2rem;width:100%;max-width:600px;animation:fadeUp 0.4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.header{text-align:center;margin-bottom:2rem}
+.header h1{font-size:26px;font-weight:500;color:var(--text);margin-bottom:6px}
+.subtitle{font-size:13px;color:var(--muted)}
+.accent-bar{width:44px;height:2.5px;border-radius:2px;background:var(--sky);margin:10px auto 0}
+.section{margin-bottom:1.5rem}
+.section-label{font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:var(--sky-mid);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:1fr 1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:500;color:var(--muted)}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;padding:9px 12px;font-size:13px;font-family:var(--font-sans);border:1px solid var(--border);border-radius:var(--radius-sm);background:#f7fbff;color:var(--text);outline:none;transition:border-color 0.15s,box-shadow 0.15s;appearance:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2356aee8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:#f7fbff;padding-right:32px;cursor:pointer}
+input:focus,select:focus,textarea:focus{border-color:var(--sky);background:#fff;box-shadow:0 0 0 3px rgba(86,174,232,0.15)}
+textarea{resize:vertical;min-height:90px;line-height:1.6}
+.price-wrap{position:relative}
+.price-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.price-wrap input{padding-left:22px}
+.radio-group{display:flex;gap:8px;flex-wrap:wrap}
+.radio-pill input[type=radio]{display:none}
+.radio-pill .pill-label{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s;background:#f7fbff}
+.radio-pill input[type=radio]:checked+.pill-label{border-color:var(--sky);background:var(--sky-light);color:var(--sky-dark)}
+.radio-pill .pill-label:hover{border-color:var(--sky)}
+.yn-group{display:flex;gap:8px}
+.yn-pill input[type=radio]{display:none}
+.yn-pill .yn-label{display:flex;align-items:center;justify-content:center;width:80px;padding:8px 0;border-radius:var(--radius-sm);border:1px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s;background:#f7fbff}
+.yn-pill input[type=radio]:checked+.yn-label{border-color:var(--sky);background:var(--sky-light);color:var(--sky-dark);font-weight:500}
+.conditional{display:none;margin-top:10px}
+.conditional.visible{display:flex;flex-direction:column;gap:10px;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.hint-box{display:none;background:var(--sky-light);border:1px solid var(--sky-border);border-radius:var(--radius-sm);padding:10px 13px;margin-top:6px;font-size:12px;color:var(--sky-dark);line-height:1.7}
+.hint-box.visible{display:block;animation:fadeIn 0.2s ease}
+.hint-box i{font-size:13px;vertical-align:-1px;margin-right:5px}
+.submit-btn{width:100%;padding:13px;margin-top:1.5rem;background:var(--sky);color:#fff;font-family:var(--font-sans);font-size:14px;font-weight:500;border:none;border-radius:var(--radius);cursor:pointer;letter-spacing:0.02em;transition:opacity 0.15s,transform 0.1s}
+.submit-btn:hover{opacity:0.88}
+.submit-btn:active{transform:scale(0.99)}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed}
+.success{display:none;text-align:center;padding:1.25rem;background:var(--sky-light);border:1px solid var(--sky-border);border-radius:var(--radius);margin-top:1.25rem}
+.success p{color:var(--sky-dark);font-weight:500;font-size:14px}
+.error-msg{display:none;text-align:center;padding:1rem;background:#FCEBEB;border:1px solid #F09595;border-radius:var(--radius);margin-top:1rem;color:#791F1F;font-size:13px}
+@media(max-width:500px){.grid-2{grid-template-columns:1fr}.card{padding:1.75rem 1.25rem}}
+</style>
+
+<div class="card">
+  <h2 class="sr-only">Custom request form for chatters to submit custom content requests</h2>
+  <div class="header">
+    <h1>Custom Request Form</h1>
+    <p class="subtitle">Submit all custom requests through this form</p>
+    <div class="accent-bar"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Agent & Model Info</div>
+    <div class="grid grid-2">
+      <div class="field">
+        <label for="chatter">Chatter name</label>
+        <input type="text" id="chatter" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label for="model">Model name</label>
+        <select id="model">
+          <option value="" disabled selected>Select a model...</option>
+          <option>Bella Jynx</option><option>Bhambiboo</option><option>Bianca</option>
+          <option>Dylon</option><option>Electra</option><option>Emily</option>
+          <option>FS | Bella</option><option>FS | Dan</option><option>FS | Nature</option>
+          <option>Helena King</option><option>Ivy Fox</option><option>Jacob | Nat</option>
+          <option>Jap</option><option>Jessica</option><option>Jesswal</option>
+          <option>Luma | Tifa</option><option>Lyndon Shannon Rose</option>
+          <option>NP | Eva</option><option>PRM | Haley Foster</option>
+          <option>Redheademmi</option><option>Ruby</option><option>Sam | Tingting</option>
+          <option>Selena</option><option>Sissykl2285</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Subscriber Info</div>
+    <div class="grid grid-2" style="margin-bottom:12px">
+      <div class="field">
+        <label for="subuser">Sub's username</label>
+        <input type="text" id="subuser" placeholder="@username" />
+      </div>
+      <div class="field">
+        <label for="date">Date of query</label>
+        <input type="date" id="date" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Is the sub subscribed?</label>
+      <div class="yn-group">
+        <label class="yn-pill"><input type="radio" name="subscribed" value="Yes"/><span class="yn-label">Yes</span></label>
+        <label class="yn-pill"><input type="radio" name="subscribed" value="No"/><span class="yn-label">No</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Request Details</div>
+    <div class="field" style="margin-bottom:12px">
+      <label>Custom request type</label>
+      <div class="radio-group">
+        <label class="radio-pill"><input type="radio" name="reqtype" value="Video" onchange="handleReqType('Video')"/><span class="pill-label"><i class="ti ti-video" aria-hidden="true"></i> Video</span></label>
+        <label class="radio-pill"><input type="radio" name="reqtype" value="Pic" onchange="handleReqType('Pic')"/><span class="pill-label"><i class="ti ti-photo" aria-hidden="true"></i> Pic</span></label>
+        <label class="radio-pill"><input type="radio" name="reqtype" value="Audio" onchange="handleReqType('Audio')"/><span class="pill-label"><i class="ti ti-microphone" aria-hidden="true"></i> Audio</span></label>
+        <label class="radio-pill"><input type="radio" name="reqtype" value="Underwear" onchange="handleReqType('Underwear')"/><span class="pill-label"><i class="ti ti-shirt" aria-hidden="true"></i> Underwear</span></label>
+        <label class="radio-pill"><input type="radio" name="reqtype" value="Other" onchange="handleReqType('Other')"/><span class="pill-label"><i class="ti ti-dots" aria-hidden="true"></i> Other</span></label>
+      </div>
+      <div class="conditional" id="cond-Video">
+        <div class="field"><label for="videoDuration">Video duration</label><input type="text" id="videoDuration" placeholder="e.g. 5 minutes, 30 seconds"/></div>
+      </div>
+      <div class="conditional" id="cond-Pic">
+        <div class="field"><label for="photoCount">Number of photos</label><input type="number" id="photoCount" placeholder="e.g. 10" min="1"/></div>
+      </div>
+      <div class="conditional" id="cond-Underwear">
+        <div class="grid grid-2">
+          <div class="field"><label for="uwFirstName">First name</label><input type="text" id="uwFirstName" placeholder="First name"/></div>
+          <div class="field"><label for="uwLastName">Last name</label><input type="text" id="uwLastName" placeholder="Last name"/></div>
+        </div>
+        <div class="field"><label for="uwAddress">Mailing address</label><textarea id="uwAddress" placeholder="Full mailing address including city, state, zip..." style="min-height:70px"></textarea></div>
+      </div>
+      <div class="conditional" id="cond-Other">
+        <div class="field"><label for="otherType">Please specify the request type</label><input type="text" id="otherType" placeholder="Describe the type of request..."/></div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:12px">
+      <label for="spend">Spend</label>
+      <input type="text" id="spend" placeholder="e.g. $50"/>
+    </div>
+    <div class="grid grid-2">
+      <div class="field">
+        <label for="stdprice">Standard price</label>
+        <div class="price-wrap"><span>$</span><input type="number" id="stdprice" placeholder="0.00"/></div>
+      </div>
+      <div class="field">
+        <label for="negprice">Negotiating price</label>
+        <div class="price-wrap"><span>$</span><input type="number" id="negprice" placeholder="0.00"/></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Query Details</div>
+    <div class="field">
+      <label for="query">Detailed query</label>
+      <p style="font-size:11px;color:var(--muted);font-style:italic;margin-top:1px">Be as specific as possible — include any special instructions, preferences, or relevant context.</p>
+      <div class="hint-box" id="hintBox"></div>
+      <textarea id="query" placeholder="Describe the request in full detail..." style="margin-top:8px"></textarea>
+    </div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">Submit request</button>
+  <div class="success" id="successMsg"><p><i class="ti ti-circle-check" aria-hidden="true"></i> Request submitted successfully!</p></div>
+  <div class="error-msg" id="errorMsg"><i class="ti ti-alert-circle" aria-hidden="true"></i> Submission failed. Please try again.</div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"/>
+
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxLAYoyaiGJ4ZGUI2DYTPZBt0zyQEq0ufzT4-UTxPHXWHKCk7seuDzTslnMIUoeVSfU/exec';
+const conditionals=['Video','Pic','Underwear','Other'];
+const hints={
+  Video:'<i class="ti ti-info-circle"></i><strong>Video request:</strong> Make sure to include the <strong>duration</strong> of the video in your description (e.g. 2 minutes, 30 seconds).',
+  Pic:'<i class="ti ti-info-circle"></i><strong>Photo request:</strong> Make sure to include the <strong>number of photos</strong> the sub is requesting.',
+  Underwear:'<i class="ti ti-info-circle"></i><strong>Underwear request:</strong> Make sure to include the sub\'s <strong>first and last name</strong> and their <strong>mailing address</strong>.'
+};
+function handleReqType(type){
+  conditionals.forEach(t=>{
+    const el=document.getElementById('cond-'+t);
+    if(el)el.className='conditional'+(t===type?' visible':'');
+  });
+  const box=document.getElementById('hintBox');
+  if(hints[type]){box.innerHTML=hints[type];box.className='hint-box visible';}
+  else{box.className='hint-box';}
+}
+async function handleSubmit(){
+  const chatter=document.getElementById('chatter').value.trim();
+  const model=document.getElementById('model').value;
+  const date=document.getElementById('date').value;
+  const subuser=document.getElementById('subuser').value.trim();
+  const subscribedEl=document.querySelector('input[name="subscribed"]:checked');
+  const spend=document.getElementById('spend').value.trim();
+  const reqtypeEl=document.querySelector('input[name="reqtype"]:checked');
+  const stdprice=document.getElementById('stdprice').value;
+  const negprice=document.getElementById('negprice').value;
+  const query=document.getElementById('query').value.trim();
+  if(!chatter||!model||!date||!subuser||!subscribedEl||!spend||!reqtypeEl||!stdprice||!negprice||!query){alert('Please fill out all required fields before submitting.');return;}
+  const reqtype=reqtypeEl.value;
+  const subscribed=subscribedEl.value;
+  let extra={};
+  if(reqtype==='Video'){const d=document.getElementById('videoDuration').value.trim();if(!d){alert('Please enter the video duration.');return;}extra.videoDuration=d;}
+  if(reqtype==='Pic'){const c=document.getElementById('photoCount').value.trim();if(!c){alert('Please enter the number of photos.');return;}extra.photoCount=c;}
+  if(reqtype==='Underwear'){const fn=document.getElementById('uwFirstName').value.trim();const ln=document.getElementById('uwLastName').value.trim();const addr=document.getElementById('uwAddress').value.trim();if(!fn||!ln||!addr){alert('Please fill in the first name, last name, and mailing address.');return;}extra.mailingName=fn+' '+ln;extra.mailingAddress=addr;}
+  if(reqtype==='Other'){const ot=document.getElementById('otherType').value.trim();if(!ot){alert('Please specify the request type.');return;}extra.otherType=ot;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='Submitting...';
+  document.getElementById('errorMsg').style.display='none';
+  try{
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatter,model,date,subuser,subscribed,spend,reqtype,stdprice,negprice,query,...extra})});
+    document.getElementById('successMsg').style.display='block';
+    btn.textContent='Submitted!';
+    setTimeout(()=>{
+      document.querySelectorAll('input[type=text],input[type=number],textarea').forEach(el=>el.value='');
+      document.getElementById('date').value='';
+      document.getElementById('model').selectedIndex=0;
+      document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
+      conditionals.forEach(t=>{const el=document.getElementById('cond-'+t);if(el)el.className='conditional';});
+      document.getElementById('hintBox').className='hint-box';
+      document.getElementById('successMsg').style.display='none';
+      btn.disabled=false;btn.textContent='Submit request';
+    },3000);
+  }catch(err){
+    document.getElementById('errorMsg').style.display='block';
+    btn.disabled=false;btn.textContent='Submit request';
+  }
+}
+</script>
